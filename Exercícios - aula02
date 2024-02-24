@@ -1,0 +1,125 @@
+CREATE DATABASE bd_sistema_bancario;
+\l
+                                                  List of databases
+        Name         |  Owner   | Encoding |        Collate         |         Ctype          |   Access privileges
+---------------------+----------+----------+------------------------+------------------------+-----------------------
+ bd_sistema_bancario | postgres | UTF8     | Portuguese_Brazil.1252 | Portuguese_Brazil.1252 |
+ postgres            | postgres | UTF8     | Portuguese_Brazil.1252 | Portuguese_Brazil.1252 |
+ template0           | postgres | UTF8     | Portuguese_Brazil.1252 | Portuguese_Brazil.1252 | =c/postgres          +
+                     |          |          |                        |                        | postgres=CTc/postgres
+ template1           | postgres | UTF8     | Portuguese_Brazil.1252 | Portuguese_Brazil.1252 | =c/postgres          +
+                     |          |          |                        |                        | postgres=CTc/postgres
+(5 rows)
+
+CREATE TABLE tabela1(coluna1 varchar(10));
+CREATE TABLE tabela2(coluna1 INTEGER);
+postgres=# CREATE TABLE tabel3(coluna1 DATE);
+postgres=# CREATE TABLE tabela4(coluna1 REAL);
+postgres=# CREATE TABLE tabela5(coluna1 BOOLEAN);
+\dt
+          List of relations
+ Schema |  Name   | Type  |  Owner
+--------+---------+-------+----------
+ public | tabel3  | table | postgres
+ public | tabela1 | table | postgres
+ public | tabela2 | table | postgres
+ public | tabela4 | table | postgres
+ public | tabela5 | table | postgres
+(5 rows)
+
+CREATE TABLE cliente(nome_cliente char, cidade_cliente char, endereço_cliente char);
+CREATE TABLE
+postgres=# CREATE TABLE conta(numero_conta integer, nome_agencia char, saldo integer);
+CREATE TABLE
+postgres=# CREATE TABLE emprestimo(numero_emprestimo integer, nome_agencia char, valor integer);
+CREATE TABLE
+postgres=# CREATE TABLE agencia(nome_agencia char, cidade_agencia char, depositos integer);
+CREATE TABLE
+postgres=# \dt
+           List of relations
+ Schema |    Name    | Type  |  Owner
+--------+------------+-------+----------
+ public | agencia    | table | postgres
+ public | cliente    | table | postgres
+ public | conta      | table | postgres
+ public | emprestimo | table | postgres
+ public | tabel3     | table | postgres
+ public | tabela1    | table | postgres
+ public | tabela2    | table | postgres
+ public | tabela4    | table | postgres
+ public | tabela5    | table | postgres
+(9 rows)
+
+DROP TABLE tabela1;
+DROP TABLE tabela2;
+DROP TABLE
+postgres=# DROP TABLE tabel3;
+DROP TABLE
+postgres=# DROP TABLE tabela4;
+DROP TABLE
+postgres=# DROP TABLE tabela5;
+DROP TABLE
+postgres=# \dt
+           List of relations
+ Schema |    Name    | Type  |  Owner
+--------+------------+-------+----------
+ public | agencia    | table | postgres
+ public | cliente    | table | postgres
+ public | conta      | table | postgres
+ public | emprestimo | table | postgres
+(4 rows)
+
+ALTER TABLE cliente ADD COLUMN idade integer;
+ALTER TABLE
+postgres=# ALTER TABLE cliente RENAME COLUMN idade TO idades;
+ALTER TABLE
+postgres=# ALTER TABLE cliente DROP COLUMN idades;
+ALTER TABLE
+postgres=# ALTER TABLE cliente rename to tblcliente;
+ALTER TABLE
+postgres=# \dt
+           List of relations
+ Schema |    Name    | Type  |  Owner
+--------+------------+-------+----------
+ public | agencia    | table | postgres
+ public | conta      | table | postgres
+ public | emprestimo | table | postgres
+ public | tblcliente | table | postgres
+(4 rows)
+
+ALTER TABLE tblcliente rename to tbl_cliente;
+ALTER TABLE
+postgres=# ALTER TABLE conta  rename to tbl_conta;
+ALTER TABLE
+postgres=# ALTER TABLE emprestimo  rename to tbl_emprestimo;
+ALTER TABLE
+postgres=# ALTER TABLE agencia  rename to tbl_agencia;
+ALTER TABLE
+postgres=# \dt
+             List of relations
+ Schema |      Name      | Type  |  Owner
+--------+----------------+-------+----------
+ public | tbl_agencia    | table | postgres
+ public | tbl_cliente    | table | postgres
+ public | tbl_conta      | table | postgres
+ public | tbl_emprestimo | table | postgres
+(4 rows)
+
+ALTER TABLE tbl_cliente ADD COLUMN idade integer;
+ALTER TABLE
+postgres=# ALTER TABLE tbl_cliente ADD COLUMN cpf integer;
+ALTER TABLE
+postgres=# SELECT * FROM tbl_cliente;
+ nome_cliente | cidade_cliente | endereço_cliente | idade | cpf
+--------------+----------------+------------------+-------+-----
+(0 rows)
+
+CREATE SCHEMA Marcelly;
+CREATE SCHEMA
+postgres=# \dn;
+   List of schemas
+   Name   |  Owner
+----------+----------
+ marcelly | postgres
+ public   | postgres
+(2 rows)
