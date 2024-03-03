@@ -1,0 +1,78 @@
+postgres=# CREATE DATABASE bd_aula03;
+CREATE DATABASE
+
+postgres=# \c bd_aula03
+You are now connected to database "bd_aula03" as user "postgres".
+
+bd_aula03=# CREATE TABLE tbl_cliente(codigo_cliente integer PRIMARY KEY, Nome char NOT NULL, Cidade char, Endereco char);
+CREATE TABLE
+bd_aula03=# CREATE TABLE tbl_titulo(codigo_titulo integer PRIMARY KEY, Titulo char NOT NULL, descricao char, categoria char);
+CREATE TABLE
+bd_aula03=# CREATE TABLE tbl_emprestimo(numero_emprestimo integer PRIMARY KEY, codigo_cliente integer, codigo_livro integer);
+CREATE TABLE
+bd_aula03=# CREATE TABLE tbl_livros(cod_livro integer PRIMARY KEY, codigo_titulo integer, status char);
+CREATE TABLE
+bd_aula03=# \dt
+             List of relations
+ Schema |      Name      | Type  |  Owner
+--------+----------------+-------+----------
+ public | tbl_cliente    | table | postgres
+ public | tbl_emprestimo | table | postgres
+ public | tbl_livros     | table | postgres
+ public | tbl_titulo     | table | postgres
+(4 rows)
+
+bd_aula03=# CREATE DOMAIN chk_status text check (value in('DISPONIVEL','ALUGADO'));
+CREATE DOMAIN
+bd_aula03=# ALTER TABLE tbl_livros alter status type chk_status;
+ALTER TABLE
+bd_aula03=# CREATE DOMAIN chk_categoria text check (value in('DRAMA','COMEDIA'));
+CREATE DOMAIN
+bd_aula03=# ALTER TABLE tbl_titulo alter categoria type chk_categoria;
+ALTER TABLE
+
+bd_aula03=# ALTER TABLE tbl_emprestimo ADD CONSTRAINT fk_codigo_cliente FOREIGN KEY (codigo_cliente) REFERENCES tbl_cliente(codigo_cliente);
+ALTER TABLE
+bd_aula03=# \d tbl_emprestimo;
+                Table "public.tbl_emprestimo"
+      Column       |  Type   | Collation | Nullable | Default
+-------------------+---------+-----------+----------+---------
+ numero_emprestimo | integer |           | not null |
+ codigo_cliente    | integer |           |          |
+ codigo_livro      | integer |           |          |
+Indexes:
+    "tbl_emprestimo_pkey" PRIMARY KEY, btree (numero_emprestimo)
+Foreign-key constraints:
+    "fk_codigo_cliente" FOREIGN KEY (codigo_cliente) REFERENCES tbl_cliente(codigo_cliente)
+
+
+bd_aula03=# ALTER TABLE tbl_livros ADD CONSTRAINT fk_codigo_titulo FOREIGN KEY (codigo_titulo) REFERENCES tbl_titulo(codigo_titulo);
+ALTER TABLE
+bd_aula03=# \d tbl_livros;
+                  Table "public.tbl_livros"
+    Column     |    Type    | Collation | Nullable | Default
+---------------+------------+-----------+----------+---------
+ cod_livro     | integer    |           | not null |
+ codigo_titulo | integer    |           |          |
+ status        | chk_status |           |          |
+Indexes:
+    "tbl_livros_pkey" PRIMARY KEY, btree (cod_livro)
+Foreign-key constraints:
+    "fk_codigo_titulo" FOREIGN KEY (codigo_titulo) REFERENCES tbl_titulo(codigo_titulo)
+
+bd_aula03=# ALTER TABLE tbl_emprestimo ADD CONSTRAINT fk_cod_livro FOREIGN KEY (codigo_livro) REFERENCES tbl_livros(cod_livro);
+ALTER TABLE
+bd_aula03=# \d tbl emprestimo;
+Did not find any relation named "tbl".
+bd_aula03=# \d tbl_emprestimo;
+                Table "public.tbl_emprestimo"
+      Column       |  Type   | Collation | Nullable | Default
+-------------------+---------+-----------+----------+---------
+ numero_emprestimo | integer |           | not null |
+ codigo_cliente    | integer |           |          |
+ codigo_livro      | integer |           |          |
+Indexes:
+    "tbl_emprestimo_pkey" PRIMARY KEY, btree (numero_emprestimo)
+Foreign-key constraints:
+    "fk_cod_livro" FOREIGN KEY (codigo_livro) REFERENCES tbl_livros(cod_livro)
+    "fk_codigo_cliente" FOREIGN KEY (codigo_cliente) REFERENCES tbl_cliente(codigo_cliente)
