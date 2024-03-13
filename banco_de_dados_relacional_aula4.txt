@@ -1,0 +1,88 @@
+postgres=# CREATE DATABASE bd_aula04;
+postgres=# \c bd_aula04;
+postgres=# insert into tbl_cliente (codigo_cliente,nome,cidade,endereco) values (1, 'Joao Silva', 'Sao Paulo', 'Rua A 123'), (2, 'Maria Santos', 'Rio de Janeiro', 'Av. B, 456'), (3, 'Pedro Almeida', 'Belo Horizonte', 'Rua C, 789'), (4, 'Ana Oliveira', 'Salvador', 'Av.D, 1011'), (5, 'Carlos Lima', 'Brasilia', 'Rua E, 1213');
+INSERT 0 5
+postgres=# insert into tbl_titulo (codigo_titulo,titulo,descricao,categoria) values (1, 'Aventuras Urbanas', 'Uma história emocionante', 'DRAMA'), (2, 'Mistérios Antigos', 'Enigmas por resolver', 'COMEDIA'), (3, 'Amor nas Estrelas', 'Um romance intergaláctico', 'DRAMA'), (4, 'Código Enigmático', 'Segredos ocultos', 'COMEDIA'), (5, 'Histórias Perdidas', 'Contos esquecidos', 'DRAMA');
+INSERT 0 5
+postgres=# insert into tbl_livros(cod_livro, codigo_titulo, status) values (1, 1, 'DISPONIVEL'), (2,1,  'ALUGADO'), (3, 2, 'DISPONIVEL'), (4, 3, 'ALUGADO'), (5, 4, 'DISPONIVEL');
+INSERT 0 5
+postgres=# insert into tbl_emprestimo(numero_emprestimo, codigo_cliente, codigo_livro) values (1, 1, 2), (2, 2, 4), (3, 3, 1), (4, 4, 5), (5, 5, 3);
+INSERT 0 5
+postgres=# select nome from tbl_cliente;
+     nome
+---------------
+ Joao Silva
+ Maria Santos
+ Pedro Almeida
+ Ana Oliveira
+ Carlos Lima
+(5 rows)
+
+postgres=# select nome, cidade from tbl_cliente where cidade = 'Sao Paulo';
+    nome    |  cidade
+------------+-----------
+ Joao Silva | Sao Paulo
+(1 row)
+
+postgres=# select nome, codigo_cliente from tbl_cliente where codigo_cliente > 3;
+     nome     | codigo_cliente
+--------------+----------------
+ Ana Oliveira |              4
+ Carlos Lima  |              5
+(2 rows)
+
+postgres=# select titulo from tbl_titulo;
+       titulo
+--------------------
+ Aventuras Urbanas
+ Mistérios Antigos
+ Amor nas Estrelas
+ Código Enigmático
+ Histórias Perdidas
+(5 rows)
+
+CREATE TABLE tbl_cliente2 as select codigo_cliente from tbl_cliente;
+SELECT 5
+
+postgres=# INSERT INTO tbl_cliente2(codigo_cliente) select codigo_cliente from tbl_cliente;
+INSERT 0 5
+postgres=# select codigo_cliente from tbl_cliente2;
+ codigo_cliente
+----------------
+              1
+              2
+              3
+              4
+              5
+              1
+              2
+              3
+              4
+              5
+(10 rows)
+
+postgres=# UPDATE tbl_livros SET status = 'DISPONIVEL' where status = 'ALUGADO';
+UPDATE 2
+postgres=# select status from tbl_livros;
+   status
+------------
+ DISPONIVEL
+ DISPONIVEL
+ DISPONIVEL
+ DISPONIVEL
+ DISPONIVEL
+(5 rows)
+
+postgres=# DELETE FROM tbl_cliente2 WHERE codigo_cliente > 3;
+DELETE 4
+postgres=# select codigo_cliente from tbl_cliente2;
+ codigo_cliente
+----------------
+              1
+              2
+              3
+              1
+              2
+              3
+(6 rows)
+
