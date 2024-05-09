@@ -1,0 +1,45 @@
+SELECT f.nome, f.cidade
+FROM tbl_fornecedor f
+JOIN tbl_estoque e ON f.cod_fornecedor = e.cod_fornecedor
+WHERE e.cod_peca = 1
+GROUP BY f.cod_fornecedor, f.nome, f.cidade
+HAVING SUM(e.quantidade) > 10;
+
+SELECT nome
+FROM tbl_peca
+WHERE preco > 10
+AND cod_peca IN (SELECT cod_peca FROM tbl_estoque);
+
+SELECT nome
+FROM tbl_peca
+WHERE cod_peca NOT IN (SELECT cod_peca FROM tbl_estoque);
+
+SELECT nome
+FROM tbl_peca
+WHERE cod_peca IN (SELECT cod_peca FROM tbl_estoque WHERE quantidade > 20);
+
+SELECT nome
+FROM tbl_peca
+WHERE nome != 'PLACA'
+ORDER BY nome;
+
+SELECT p.nome, p.cor
+FROM tbl_peca p
+JOIN tbl_estoque e ON p.cod_peca = e.cod_peca
+JOIN tbl_fornecedor f ON e.cod_fornecedor = f.cod_fornecedor
+WHERE f.nome = 'C'
+ORDER BY p.nome;
+
+SELECT nome, cor
+FROM tbl_peca
+WHERE cidade = 'LONDRES';
+
+SELECT nome
+FROM tbl_peca
+WHERE cidade = 'LONDRES'
+AND cod_peca NOT IN (SELECT cod_peca FROM tbl_estoque WHERE cidade = 'PARIS');
+
+SELECT cod_peca
+FROM tbl_estoque
+GROUP BY cod_peca
+HAVING SUM(quantidade) > (SELECT SUM(quantidade) FROM tbl_estoque WHERE cod_peca = 2);

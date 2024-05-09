@@ -1,0 +1,41 @@
+SELECT UPPER(f.fornecedor), LOWER(p.nome) AS peca
+FROM tbl_fornecedor f
+JOIN tbl_peca p ON f.cidade = p.cidade
+ORDER BY fornecedor, peca;
+
+SELECT DISTINCT cidade
+FROM tbl_fornecedor;
+
+SELECT p.nome, p.cor
+FROM tbl_peca p
+JOIN tbl_estoque e ON p.cod_peca = e.cod_peca
+WHERE e.cod_fornecedor = 3
+ORDER BY p.nome;
+
+SELECT f.nome, f.cidade
+FROM tbl_fornecedor f
+JOIN tbl_estoque e ON f.cod_fornecedor = e.cod_fornecedor
+WHERE e.cod_peca = 1
+GROUP BY f.cod_fornecedor, f.nome, f.cidade
+HAVING COUNT(*) > 10;
+
+SELECT SUM(quantidade)
+FROM tbl_estoque
+WHERE cod_peca = 1;
+
+SELECT AVG(p.preco) AS media
+FROM tbl_peca p
+JOIN tbl_estoque e ON p.cod_peca = e.cod_peca
+WHERE e.cod_fornecedor = 3;
+
+SELECT MAX(preco), MIN(preco)
+FROM tbl_peca;
+
+SELECT COUNT(*)
+FROM tbl_peca;
+
+SELECT COUNT(DISTINCT cidade)
+FROM tbl_peca;
+
+SELECT ROUND(AVG(preco), 1)
+FROM tbl_peca;
