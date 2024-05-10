@@ -1,0 +1,75 @@
+-- ex1
+CREATE FUNCTION atualiza_qtde_projetos()
+RETURNS TRIGGER AS $$
+LANGUAGE plpgsql;
+BEGIN
+    UPDATE tbl_departamentos
+    SET qtde_projetos = qtde_projetos - 1
+    WHERE cod_departamento = OLD.cod_departamento;
+    
+    RETURN OLD;
+END$$;
+
+
+CREATE TRIGGER projeto_deletado
+AFTER DELETE ON tbl_projetos
+FOR EACH ROW
+EXECUTE FUNCTION atualiza_qtde_projetos();
+
+
+--ex2
+CREATE FUNCTION atualiza_qtde_projetos_novo()
+RETURNS TRIGGER
+LANGUAGE plpgsql 
+AS $$
+BEGIN
+    UPDATE tbl_departamentos
+    SET qtde_projetos = qtde_projetos + 1
+    WHERE cod_departamento = NEW.cod_departamento;
+    
+    RETURN NEW;
+END$$;
+
+
+CREATE TRIGGER projeto_adicionado
+AFTER INSERT ON tbl_projetos
+FOR EACH ROW
+EXECUTE FUNCTION atualiza_qtde_projetos_novo();
+
+--ex3
+CREATE TABLE tbl_empregado_historico_salario (
+    cod_empregado INT REFERENCES tbl_empregados(cod_empregado),
+    salario REAL,
+    data TIMESTAMP
+);
+
+CREATE  registra_historico_salario()
+RETURNS TRIGGER 
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    INSERT INTO tbl_empregado_historico_salario (cod_empregado, salario, data)
+    VALUES (NEW.cod_empregado, NEW.salario, NOW());
+    
+    RETURN NEW;
+END$$ 
+
+CREATE TRIGGER salario_atualizado
+AFTER UPDATE OF salario ON tbl_empregados
+FOR EACH ROW
+EXECUTE FUNCTION registra_historico_salario();
+
+--ex4
+CREATE OR REPLACE FUNCTION atualiza_data_atualizacao()
+RETURNS TRIGGER 
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    NEW.data_atualizacao := NOW();
+    RETURN NEW;
+END$$ 
+
+CREATE TRIGGER dados_empregado_atualizados
+BEFORE UPDATE ON tbl_empregados
+FOR EACH ROW
+EXECUTE FUNCTION atualiza_data_atualizacao();
