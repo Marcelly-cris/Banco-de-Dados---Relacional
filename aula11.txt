@@ -1,0 +1,56 @@
+	Aula 11
+
+-- ex1
+bd_aula11=# CREATE PROCEDURE proc_upd_nome_depart( IN p_cod_departamento INT, IN p_novo_nome TEXT) 
+LANGUAGE plpgsql AS 
+$$ BEGIN 
+UPDATE tbl_departamentos
+SET nome = p_novo_nome WHERE cod_departamento = p_cod_departamento END $$;
+
+
+-- ex2
+bd_aula11=# CREATE PROCEDURE proc_copiatbl()
+LANGUAGE plpgsql AS
+$$
+BEGIN
+    DROP TABLE tbl_cidades_copia;
+    CREATE TABLE tbl_cidades_copia AS
+    SELECT * FROM tbl_cidades;
+    COMMIT;
+END $$;
+
+
+-- ex3
+bd_aula11=# CREATE PROCEDURE proc_novoprojeto(IN p_nome_projeto TEXT, IN p_cod_departamento INT)
+LANGUAGE plpgsql AS 
+$$
+BEGIN
+    INSERT INTO tbl_projetos (nome, cod_departamento)
+    VALUES (p_nome_projeto, p_cod_departamento);
+    COMMIT;
+END $$;
+
+
+-- ex4
+bd_aula11=# CREATE PROCEDURE proc_delprojeto(IN p_cod_projeto INT)
+LANGUAGE plpgsql AS 
+$$
+BEGIN
+    DELETE FROM tbl_projetos
+    WHERE cod_projeto = p_cod_projeto;
+    COMMIT;
+END $$;
+
+
+-- ex5
+bd_aula11=# CREATE PROCEDURE proc_projeto_arquivado( IN p_cod_projeto INT)
+LANGUAGE plpgsql AS
+$$
+BEGIN    
+    CREATE TABLE tbl_projetos_arquivados (codigo_projeto INT,nome TEXT);      
+    INSERT INTO tbl_projetos_arquivados (codigo_projeto, nome)    
+    SELECT cod_projeto, nome    FROM tbl_projetos    WHERE cod_projeto = p_cod_projeto;    
+    DELETE FROM tbl_projetos    WHERE cod_projeto = p_cod_projeto;	
+COMMIT;
+END;
+$$;

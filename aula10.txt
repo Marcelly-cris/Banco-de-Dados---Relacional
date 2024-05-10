@@ -1,0 +1,148 @@
+	Aula 10
+CREATE VIEW v_depcidade AS
+SELECT d.nome AS departamento, c.nome AS cidade
+FROM tbl_departamentos d
+JOIN tbl_cidades c ON d.cod_cidade = c.cod_cidade;
+select * from v_depcidade;
+  departamento   |   cidade
+-----------------+-------------
+ Departamento 1  | New York
+ Departamento 2  | Los Angeles
+ Departamento 3  | Chicago
+ Departamento 4  | Houston
+ Departamento 5  | Houston
+ Departamento 6  | Houston
+ Departamento 7  | Houston
+ Departamento 8  | Phoenix
+ Departamento 9  | Phoenix
+ Departamento 10 | San Jose
+ Departamento 11 | San Jose
+ Departamento 12 | San Jose
+ Departamento 13 | San Jose
+ Departamento 14 | San Jose
+ Departamento 15 | San Jose
+ Departamento 16 | San Jose
+ Departamento 17 | San Jose
+ Departamento 18 | Seattle
+ Departamento 19 | Seattle
+ Departamento 20 | Las Vegas
+ Departamento 21 | Detroit
+ Departamento 22 | Detroit
+ Departamento 23 | Detroit
+ Departamento 24 | Detroit
+ Departamento 25 | Detroit
+ Departamento 26 | Detroit
+ Departamento 27 | Memphis
+ Departamento 28 | Memphis
+ Departamento 29 | Memphis
+ Departamento 30 | Louisville
+ Departamento 31 | Milwaukee
+ Departamento 32 | Albuquerque
+ Departamento 33 | Louisville
+ Departamento 34 | Louisville
+ Departamento 35 | Louisville
+ Departamento 36 | Louisville
+(36 rows)
+
+
+CREATE VIEW v_depcidadehouston AS
+SELECT departamento, cidade
+FROM v_depcidade
+WHERE cidade = 'Houston';
+select * from v_depcidadehouston;
+  departamento  | cidade
+----------------+---------
+ Departamento 4 | Houston
+ Departamento 5 | Houston
+ Departamento 6 | Houston
+ Departamento 7 | Houston
+(4 rows)
+
+CREATE VIEW v_opsalario AS
+SELECT SUM(salario) AS soma_salarios, AVG(salario) AS media_salarios
+FROM tbl_empregados;
+select * from v_opsalario;
+ soma_salarios | media_salarios
+---------------+----------------
+        212300 |         5307.5
+
+
+CREATE VIEW v_empregados_salarial AS
+SELECT nome, salario
+FROM tbl_empregados
+WHERE salario > 5500;
+select * from v_empregados_salarial;
+       nome       | salario
+------------------+---------
+ Gustavo Costa    |    5600
+ Felipe Pereira   |    5700
+ Adriana Lima     |    5600
+ Marcos Fernandes |    5700
+ Fernanda Barbosa |    5600
+ Gustavo Gomes    |    5700
+ Lúcia Castro     |    5600
+
+CREATE VIEW v_departemp AS
+SELECT d.nome AS departamento, COUNT(e.cod_empregado) AS quantidade_empregados
+FROM tbl_departamentos d
+LEFT JOIN tbl_empregados e ON d.cod_departamento = e.cod_departamento
+GROUP BY d.nome
+ORDER BY COUNT(e.cod_empregado) DESC;
+select * from v_departemp;
+  departamento   | quantidade_empregados
+-----------------+-----------------------
+ Departamento 20 |                     8
+ Departamento 10 |                     5
+ Departamento 36 |                     5
+ Departamento 3  |                     4
+ Departamento 15 |                     2
+ Departamento 18 |                     1
+ Departamento 2  |                     1
+ Departamento 28 |                     1
+ Departamento 33 |                     1
+ Departamento 8  |                     1
+ Departamento 29 |                     1
+ Departamento 30 |                     1
+ Departamento 1  |                     1
+ Departamento 35 |                     1
+ Departamento 19 |                     1
+ Departamento 9  |                     1
+ Departamento 32 |                     1
+ Departamento 34 |                     1
+ Departamento 7  |                     1
+ Departamento 31 |                     1
+ Departamento 17 |                     1
+ Departamento 26 |                     0
+ Departamento 23 |                     0
+ Departamento 22 |                     0
+ Departamento 16 |                     0
+ Departamento 27 |                     0
+ Departamento 21 |                     0
+ Departamento 24 |                     0
+ Departamento 6  |                     0
+ Departamento 13 |                     0
+ Departamento 11 |                     0
+ Departamento 4  |                     0
+ Departamento 25 |                     0
+ Departamento 14 |                     0
+ Departamento 12 |                     0
+ Departamento 5  |                     0
+(36 rows)
+
+CREATE VIEW v_departrouble AS
+SELECT d.nome AS departamento
+FROM tbl_departamentos d
+LEFT JOIN tbl_projetos p ON d.cod_departamento = p.cod_departamento
+LEFT JOIN tbl_empregados e ON d.cod_departamento = e.cod_departamento
+GROUP BY d.nome
+HAVING COUNT(p.cod_projeto) > COUNT(e.cod_empregado);
+select * from v_deptrouble;
+  departamento
+-----------------
+ Departamento 24
+ Departamento 6
+ Departamento 13
+ Departamento 11
+ Departamento 4
+ Departamento 14
+ Departamento 12
